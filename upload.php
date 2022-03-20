@@ -14,6 +14,11 @@ if (mysqli_num_rows($result) === 1) {
         Header("Location: banned.php");
     }
 }
+
+if(!isset($_SESSION["username"])) {
+    header("Location: ../login.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,7 +30,15 @@ if (mysqli_num_rows($result) === 1) {
     </head>
     <body>
        <?php require_once 'header.php';?>
-       <h2>Videos</h2>
+       <h2>Upload A Video</h2>
+       <form method="post" action="./workers/upload_worker/init.php" enctype="multipart/form-data">
+           <h3>Title</h3>
+           <input type="text" name="title" placeholder="me at the zoo">
+           <h3>Description</h3>
+           <textarea name="description" placeholder="Hi guys, It's christmas less then a week! Woohoo, I am so exited for this news"></textarea><br><br>
+           <input type="file" name="fileToUpload" id="filetoupload">
+           <button type="submit" name="submit">Upload</button>
+       </form>
        <hr>
        <?php require_once 'footer.php';?>
     </body>

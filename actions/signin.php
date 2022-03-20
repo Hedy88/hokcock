@@ -1,45 +1,20 @@
 <?php
+session_start();
 require_once '../important/config.php';
 include '../important/auth.php';
 
-if (isset($_POST['username']) && $_POST['password']) {
-    function validate($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-    }
+$post_username = trim(htmlspecialchars($_POST["username"]));
+$post_password = trim(htmlspecialchars($_POST["password"]));
 
-    $username = validate($_POST['username']);
-    $password = validate($_POST['password']);
-
-    if (empty($username)) {
-        header('Location: ../login.php?error=Username required');
-    } else if(empty($password)) {
-        header('Location: ../login.php?error=Pass required');
+$sql = "SELECT * FROM users2 WHERE username='".mysqli_real_escape_string($db_connection, $post_username)."'";
+$result = mysqli_query($db_connection, $sql);
+if (mysqli_num_rows($result) === 1) {
+    $row = mysqli_fetch_assoc($result); 
+    if (password_verify($post_password, $row['password'])) {
+        $isLoggedin = true;
+        $_SESSION['username'] = $row['username'];
+        header('Location: ../index.php');
     } else {
-        $sql = "SELECT * FROM users2 WHERE username='$username' AND password='$password'";
-
-        $result = mysqli_query($db_connection, $sql);
-
-        if (mysqli_num_rows($result) === 1) {
-            $row = mysqli_fetch_assoc($result);
-            if ($row['username'] === $username && $row['password'] === $password) {
-              $_SESSION['username'] = $row['username'];
-              $_SESSION['id'] = $row['id'];  
-              
-              if (isset($_SESSION['username'])) {
-                header("Location: ../index.php");
-                close();
-              }
-            } 
-        } else {
-            header('Location: ../login.php?error=Incorrect username or password');
-        }
+        header('Location: ../login.php?error=Invalid password');
     }
-} else {
-    header('Location: ../login.php?error=Please put your username and password');
-    exit();
-}
-
-
+} 

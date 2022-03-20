@@ -1,21 +1,5 @@
 <?php require_once './important/config.php';?>
 <?php include './important/auth.php';?>
-<?php session_start(); 
-if (isset($_SESSION['username'])) {
-    $username = $_SESSION['username'];
-}
-
-$sql3 = "SELECT * FROM users2 WHERE isBanned=1";
-$result = mysqli_query($db_connection, $sql3);
-
-if (mysqli_num_rows($result) === 1) { 
-    $row = mysqli_fetch_assoc($result);
-    if ($row['isBanned'] === '1') {
-        Header("Location: banned.php");
-    }
-}
-?>
-<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -25,7 +9,9 @@ if (mysqli_num_rows($result) === 1) {
     </head>
     <body>
        <?php require_once 'header.php';?>
-       <h2>Videos</h2>
+       <h2 style="color:red">You Have Been Banned!</h2>
+       <p>congratulations! you have been banned. please contact the <a href="discordlink.php">hokcock discord</a> to get unbanned.</p>
+       <button action="./actions/logout.php">logout</button>
        <hr>
        <?php require_once 'footer.php';?>
     </body>

@@ -1,9 +1,9 @@
 <div class="header">
     <h1>hokcock</h1>
-    <p><i>The most advanced video sharing website</i> 
-    <?php if (isset($SESSION['username'])) {
-         echo ' | Welcome' . $SESSION['username']; 
-         echo ' | <a href="upload.php">Upload</a>';
+    <p><i><?php echo $sitetagline;?></i> 
+    <?php if (isset($username)) {
+         echo ' | Welcome, ' . $username; 
+         echo ' | <a href="upload.php">Upload</a> | <a href="./actions/logout.php">Logout</a>';
         } else {
             echo ' | <a href="login.php">Login</a> / <a href="signup.php">Sign Up</a>'; 
         }
