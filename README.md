@@ -1,2 +1,2 @@
 # hokcock
-the best video site there has been
+the best (worst*) video site there has been
